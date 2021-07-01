@@ -1,5 +1,8 @@
 package monkeys;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.thymeleaf.util.Validate;
+
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -9,16 +12,19 @@ import javax.persistence.Id;
 // @Entity is a JPA annotation to make this object ready for storage in a JPA-based data store
 
 @Entity
-class Monkey {
+public class Monkey {
 
-  private @Id @GeneratedValue Long id;
+  private @Id @GeneratedValue long id;
+
   private String name;
   private String species;
 
-  Monkey() {}
+  public Monkey() {}
 
-  Monkey(String name, String species) {
-
+  public Monkey(String name, String species) {
+//    if (name.equals("")){
+//      throw new IndexOutOfBoundsException();
+//    }
     this.name = name;
     this.species = species;
   }
@@ -27,9 +33,7 @@ class Monkey {
     return this.id;
   }
 
-  public String getName() {
-    return this.name;
-  }
+  public String getName() { return this.name; }
 
   public String getSpecies() {
     return this.species;

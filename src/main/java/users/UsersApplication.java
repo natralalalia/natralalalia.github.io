@@ -1,0 +1,16 @@
+//package users;
+//
+//import org.springframework.boot.SpringApplication;
+//import org.springframework.boot.autoconfigure.SpringBootApplication;
+//
+//// @SpringBootApplication is a meta-annotation that pulls in component scanning, autoconfiguration, and property support.
+//
+//@SpringBootApplication
+//public class UsersApplication {
+//
+//    public static void main(String... args) {
+//        SpringApplication.run(UsersApplication.class, args);
+//    }
+//}
+//
+//

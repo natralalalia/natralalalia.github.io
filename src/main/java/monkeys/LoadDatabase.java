@@ -9,14 +9,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 class LoadDatabase {
 
-  private static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
+    private static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
 
-  @Bean
-  CommandLineRunner initDatabase(MonkeyRepository repository) {
+    @Bean
+    CommandLineRunner initDatabase(MonkeyRepository repository) {
 
-    return args -> {
-      log.info("Preloading " + repository.save(new Monkey("Bogdan", "macaque")));
-      log.info("Preloading " + repository.save(new Monkey("Freddie", "chimpanzee")));
-    };
-  }
+        return args -> {
+            log.info("Preloading " + repository.save(new Monkey("Bogdan", "macaque")));
+            log.info("Preloading " + repository.save(new Monkey("Freddie", "chimpanzee")));
+        };
+    }
 }
