@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -15,8 +17,12 @@ class MonkeyController {
 
   private final MonkeyRepository repository;
 
-  MonkeyController(MonkeyRepository repository) {
+  private final MonkeyModelAssembler assembler;
+
+  MonkeyController(MonkeyRepository repository, MonkeyModelAssembler assembler) {
+
     this.repository = repository;
+    this.assembler = assembler;
   }
 
   @GetMapping("/hello")
@@ -26,32 +32,21 @@ class MonkeyController {
 
   @GetMapping("/monkeys")
   CollectionModel<EntityModel<Monkey>> all() {
-    List<EntityModel<Monkey>> monkeys = repository.findAll().stream().map(monkey -> EntityModel.of(monkey,
-            linkTo(methodOn(MonkeyController.class).one(monkey.getId())).withSelfRel(),
-                    linkTo(methodOn(MonkeyController.class).all()).withRel("monkeys"))).collect(Collectors.toList());
+    List<EntityModel<Monkey>> monkeys = repository.findAll().stream().map(assembler::toModel).collect(Collectors.toList());
     return CollectionModel.of(monkeys, linkTo(methodOn(MonkeyController.class).all()).withSelfRel());
   }
 
-  // CollectionModel<> is another Spring HATEOAS container; it's aimed at encapsulating collections of
-  // resources - instead of a single resource entity, like EntityModel<> from earlier.
-  // CollectionModel<> too lets you include links.
-
-  // Don't let that first statement slip by. What does "encapsulating collections" mean?
-  // Collection of Monkeys?
-  // Not quite.
-  // Since we are talking REST, it should encapsulate collections of MONKEY RESOURCES
-  // That's why you fetch all the monkeys, but then transform them into a list of EntityModel<Monkey> objects
-
-  // WHAT IS THE POINT OF ADDING ALL THESE LINKS?
-  // It makes it possible to evolve REST services over time. Existing links can be maintained while new
-  // links can be added in the future. Newer clients may take advantage of the new links, while legacy
-  // clients can sustain themselves on the old links. This is especially helpful if services get relocated
-  // and moved around. As long as the link structure is maintained, clients can STILL find and interact with things
-
   @PostMapping("/monkeys")
-  Monkey newMonkey(@RequestBody Monkey newMonkey) {
-    return repository.save(newMonkey);
+  ResponseEntity<?> newMonkey(@RequestBody Monkey newMonkey) {
+    EntityModel<Monkey> entityModel = assembler.toModel(repository.save(newMonkey));
+
+    return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
   }
+  // - The new Monkey object is saved as before, but the resulting object is wrapped using the MonkeyModelAssembler
+  // - Spring MVC's ResponseEntity is used to create an HTTP 201 Created status message. This type of response
+  // typically includes a Location response header, and we use the URI derived from the model's self-related link
+  // - Additionally, return the model-based version of the saved object
+
 
   // EntityModel<T> is a generic container from Spring HATEOAS that includes not only the data but a collection of links
   @GetMapping("/monkeys/{id}")
@@ -60,20 +55,12 @@ class MonkeyController {
     Monkey monkey = repository.findById(id) //
             .orElseThrow(() -> new MonkeyNotFoundException(id));
 
-    return EntityModel.of(monkey,
-            linkTo(methodOn(MonkeyController.class).one(id)).withSelfRel(),
-            linkTo(methodOn(MonkeyController.class).all()).withRel("monkeys"));
-    // linkTo(methodOn(EmployeeController.class).one(id)).withSelfRel() asks that Spring HATEOAS build a link to
-    // the EmployeeController 's one() method, and flag it as a self link.
-
-    // linkTo(methodOn(EmployeeController.class).all()).withRel("employees") asks Spring HATEOAS to build a link to
-    // the aggregate root, all(), and call it "employees"
+    return assembler.toModel(monkey);
   }
 
   @PutMapping("/monkeys/{id}")
-  Monkey replaceMonkey(@RequestBody Monkey newMonkey, @PathVariable Long id) {
-    
-    return repository.findById(id)
+  ResponseEntity<?> replaceMonkey(@RequestBody Monkey newMonkey, @PathVariable Long id) {
+    Monkey updatedMonkey = repository.findById(id)
       .map(monkey -> {
         monkey.setName(newMonkey.getName());
         monkey.setSpecies(newMonkey.getSpecies());
@@ -83,10 +70,25 @@ class MonkeyController {
         newMonkey.setId(id);
         return repository.save(newMonkey);
       });
+
+    EntityModel<Monkey> entityModel = assembler.toModel(updatedMonkey);
+
+    return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
   }
+  // the Monkey object built from the save() operation is then wrapped using the MonkeyModelAssembler into an
+  // EntityModel<Monkey> object. Using the getRequiredLink() method, you can retrieve the Link created by the
+  // MonkeyModelAssembler with a SELF rel. This method returns a Link which must be turned into a URI with the
+  // toUri method.
+
+  // Since we want a more detailed HTTP response code than 200 OK, we will use Spring MVC's ResponseEntity
+  // wrapper. It has a handy static method created() where we can plug in the resource's URI. It's debatable
+  // if HTTP 201 Created carries the right semantics since we aren't necessarily "creating" a new resource.
+  // But it comes pre-loaded with a Location response header, so run with it.
 
   @DeleteMapping("/monkeys/{id}")
-  void deleteMonkey(@PathVariable Long id) {
+  ResponseEntity<?> deleteMonkey(@PathVariable Long id) {
     repository.deleteById(id);
+
+    return ResponseEntity.noContent().build();
   }
 }

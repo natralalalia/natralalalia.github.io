@@ -1,8 +1,6 @@
 package monkeys;
 
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.rules.ExpectedException;
 import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,15 +8,17 @@ import static org.junit.jupiter.api.Assertions.*;
 class MonkeyTest {
 
     String species = "Orangutan";  // Prime Video channel
-    String name = "BabyMonkey"; // Prime Video title
-    Monkey x = new Monkey(name, species);
+//    String name = "BabyMonkey"; // Prime Video title
+    String firstName = "Baby";
+    String lastName = "Monkey";
+    Monkey x = new Monkey(firstName, lastName, species);
 
     MonkeyTest() throws Exception {
     }
 
     @Test
     void getName() {
-        assertEquals(x.getName(), name);
+        assertEquals(x.getName(), "Baby Monkey");
     }
 
     @Test
@@ -35,27 +35,41 @@ class MonkeyTest {
 
     @Test
     void setName() {
-        String newName = "AdultMonkey";
+        String newName = "Adult Monkey";
         x.setName(newName);
         assertEquals(x.getName(), newName);
     }
 
     @Test
+    void setFirstName() {
+        String newFirstName = "Arthur";
+        x.setFirstName(newFirstName);
+        assertEquals(x.getFirstName(), newFirstName);
+    }
+
+    @Test
+    void setLastName() {
+        String newLastName = "Frederic";
+        x.setLastName(newLastName);
+        assertEquals(x.getLastName(), newLastName);
+    }
+
+    @Test
     void setSpecies() {
         String newSpecies = "Gorilla";
-        x.setName(newSpecies);
-        assertEquals(x.getName(), newSpecies);
+        x.setSpecies(newSpecies);
+        assertEquals(x.getSpecies(), newSpecies);
     }
 
     @Test
     void testEquals() throws Exception {
-        Monkey newMonkey = new Monkey(name, species);
+        Monkey newMonkey = new Monkey(firstName, lastName, species);
         assertEquals(x, newMonkey);
     }
 
     @Test
     void testToString() {
-        assertEquals(x.toString(), "Monkey{" + "id=" + x.getId() + ", name='BabyMonkey" + '\'' + ", species='Orangutan" + '\'' + '}');
+        assertEquals(x.toString(), "Monkey{" + "id=" + x.getId() + ", firstName='Baby', lastName='" + lastName + "', species='Orangutan" + '\'' + '}');
     }
 
 //    @Rule

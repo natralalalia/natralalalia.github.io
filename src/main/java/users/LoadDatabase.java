@@ -19,8 +19,8 @@ public class LoadDatabase {
     CommandLineRunner initDatabase(UserRepository repository) {
 
         HashSet<Monkey> monkeysSeen = new HashSet<Monkey>();
-        Monkey monkeyOne = new Monkey("Sean", "macaque");
-        Monkey monkeyTwo = new Monkey("Helen", "macaque");
+        Monkey monkeyOne = new Monkey("Sean", "Davis", "macaque");
+        Monkey monkeyTwo = new Monkey("Helen", "Rogan", "macaque");
         monkeysSeen.add(monkeyOne);
         monkeysSeen.add(monkeyTwo);
         

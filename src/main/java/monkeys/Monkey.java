@@ -16,16 +16,15 @@ public class Monkey {
 
   private @Id @GeneratedValue long id;
 
-  private String name;
   private String species;
+  private String firstName;
+  private String lastName;
 
   public Monkey() {}
 
-  public Monkey(String name, String species) {
-//    if (name.equals("")){
-//      throw new IndexOutOfBoundsException();
-//    }
-    this.name = name;
+  public Monkey(String firstName, String lastName, String species) {
+    this.firstName = firstName;
+    this.lastName = lastName;
     this.species = species;
   }
 
@@ -33,7 +32,11 @@ public class Monkey {
     return this.id;
   }
 
-  public String getName() { return this.name; }
+  public String getName() { return this.firstName + " " + this.lastName; }
+
+  public String getFirstName() { return this.firstName; }
+
+  public String getLastName() { return this.lastName; }
 
   public String getSpecies() {
     return this.species;
@@ -44,8 +47,14 @@ public class Monkey {
   }
 
   public void setName(String name) {
-    this.name = name;
+    String[] parts = name.split(" ");
+    this.firstName = parts[0];
+    this.lastName = parts[1];
   }
+
+  public void setFirstName(String firstName) { this.firstName = firstName; }
+
+  public void setLastName(String lastName) { this.lastName = lastName; }
 
   public void setSpecies(String species) {
     this.species = species;
@@ -59,17 +68,17 @@ public class Monkey {
     if (!(o instanceof Monkey))
       return false;
     Monkey monkey = (Monkey) o;
-    return Objects.equals(this.id, monkey.id) && Objects.equals(this.name, monkey.name)
-        && Objects.equals(this.species, monkey.species);
+    return Objects.equals(this.id, monkey.id) && Objects.equals(this.firstName, monkey.firstName)
+            && Objects.equals(this.lastName, monkey.lastName) && Objects.equals(this.species, monkey.species);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.id, this.name, this.species);
+    return Objects.hash(this.id, this.firstName, this.lastName, this.species);
   }
 
   @Override
   public String toString() {
-    return "Monkey{" + "id=" + this.id + ", name='" + this.name + '\'' + ", species='" + this.species + '\'' + '}';
+    return "Monkey{" + "id=" + this.id + ", firstName='" + this.firstName + '\'' + ", lastName='" + this.lastName + "', species='" + this.species + '\'' + '}';
   }
 }

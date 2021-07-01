@@ -26,7 +26,7 @@ public class User {
     }
 
     private void userSawMonkey(){
-        Monkey seenMonkey = new Monkey("Natalia", "Chimpanzee");
+        Monkey seenMonkey = new Monkey("Natalia", "Gutanu", "Chimpanzee");
         monkeysSeen.add(seenMonkey);
     }
 }
