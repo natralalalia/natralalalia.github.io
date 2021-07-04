@@ -1,4 +1,4 @@
-package users;
+package monkeys;
 
 public class UserNotFoundException extends RuntimeException {
     UserNotFoundException(Long id) {

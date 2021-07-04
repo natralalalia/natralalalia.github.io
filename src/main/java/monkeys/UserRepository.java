@@ -1,4 +1,4 @@
-package users;
+package monkeys;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
