@@ -25,6 +25,7 @@ class MonkeyController {
     this.assembler = assembler;
   }
 
+  @CrossOrigin(origins = "*")
   @GetMapping("/hello")
   public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
     return String.format("Hello %s!", name);
@@ -36,6 +37,7 @@ class MonkeyController {
     return CollectionModel.of(monkeys, linkTo(methodOn(MonkeyController.class).all()).withSelfRel());
   }
 
+  @CrossOrigin(origins = "*")
   @PostMapping("/monkeys")
   ResponseEntity<?> newMonkey(@RequestBody Monkey newMonkey) {
     EntityModel<Monkey> entityModel = assembler.toModel(repository.save(newMonkey));
