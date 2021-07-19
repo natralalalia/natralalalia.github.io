@@ -87,6 +87,39 @@ class MonkeyController {
   // if HTTP 201 Created carries the right semantics since we aren't necessarily "creating" a new resource.
   // But it comes pre-loaded with a Location response header, so run with it.
 
+  @CrossOrigin(origins = "*")
+  @PatchMapping("/monkeys/{id}")
+  ResponseEntity<?> updateMonkey(@RequestParam String fieldToUpdate, @RequestParam String newValue, @PathVariable Long id) {
+    Monkey updatedMonkey = repository.findById(id)
+            .map(monkey -> {
+              switch (fieldToUpdate) {
+                case "firstName":
+                  monkey.setFirstName(newValue);
+                  break;
+                case "surname":
+                  monkey.setLastName(newValue);
+                  break;
+                case "species":
+                  monkey.setSpecies(newValue);
+                  break;
+              }
+
+//              monkey.setName(newMonkey.getName());
+//              monkey.setSpecies(newMonkey.getSpecies());
+              return repository.save(monkey);
+            })
+            .orElseGet(() -> {
+              return null;
+//              monkey.setId(id);
+//              return repository.save(monkey);
+            });
+
+    assert updatedMonkey != null;
+    EntityModel<Monkey> entityModel = assembler.toModel(updatedMonkey);
+
+    return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
+  }
+
   @DeleteMapping("/monkeys/{id}")
   ResponseEntity<?> deleteMonkey(@PathVariable Long id) {
     repository.deleteById(id);
