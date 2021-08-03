@@ -13,12 +13,14 @@ public class Order {
     private @Id
     @GeneratedValue Long id;
 
+    private String name;
     private String description;
     private Status status;
 
     Order() {}
 
-    Order(String description, Status status) {
+    Order(String name, String description, Status status) {
+        this.name = name;
         this.description = description;
         this.status = status;
     }
@@ -47,6 +49,10 @@ public class Order {
         this.status = status;
     }
 
+    public void setName(String name) { this.name = name; }
+
+    public String getName() { return this.name; }
+
     @Override
     public boolean equals(Object o) {
 
@@ -56,16 +62,16 @@ public class Order {
             return false;
         Order order = (Order) o;
         return Objects.equals(this.id, order.id) && Objects.equals(this.description, order.description)
-                && this.status == order.status;
+                && this.status == order.status && this.name == order.name;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.description, this.status);
+        return Objects.hash(this.id, this.name, this.description, this.status);
     }
 
     @Override
     public String toString() {
-        return "Order{" + "id=" + this.id + ", description='" + this.description + '\'' + ", status=" + this.status + '}';
+        return "Order{" + "id=" + this.id + ", name = " + this.name + ", description='" + this.description + '\'' + ", status=" + this.status + '}';
     }
 }
