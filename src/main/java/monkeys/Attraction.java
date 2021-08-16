@@ -1,5 +1,4 @@
 package monkeys;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.thymeleaf.util.Validate;
 import org.w3c.dom.Attr;
@@ -21,13 +20,17 @@ public class Attraction implements Serializable {
     private String name;
     private String description;
     private String address;
+    private String image;
+    private double score;
 
     public Attraction() {}
 
-    public Attraction(String name, String description, String address) {
+    public Attraction(String name, String description, String address, String image, double score) {
         this.name = name;
         this.description = description;
         this.address = address;
+        this.image = image;
+        this.score = score;
     }
 
     public Long getId() {
@@ -41,6 +44,10 @@ public class Attraction implements Serializable {
     public String getAddress() {
         return this.address;
     }
+
+    public String getImage() {return this.image;}
+
+    public double getScore() {return this.score;}
 
     public void setId(Long id) {
         this.id = id;
@@ -58,6 +65,10 @@ public class Attraction implements Serializable {
         this.address = address;
     }
 
+    public void setImage(String image) {this.image = image;}
+
+    public void setScore(double score) {this.score = score;}
+
     @Override
     public boolean equals(Object o) {
 
@@ -66,13 +77,17 @@ public class Attraction implements Serializable {
         if (!(o instanceof Attraction))
             return false;
         Attraction attraction = (Attraction) o;
-        return Objects.equals(this.id, attraction.id) && Objects.equals(this.name, attraction.name)
-                && Objects.equals(this.description, attraction.description) && Objects.equals(this.address, attraction.address);
+        return Objects.equals(this.id, attraction.id) &&
+                Objects.equals(this.name, attraction.name) &&
+                Objects.equals(this.description, attraction.description) &&
+                Objects.equals(this.address, attraction.address) &&
+                Objects.equals(this.image, attraction.image) &&
+                Objects.equals(this.score, attraction.score);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.name, this.address, this.description);
+        return Objects.hash(this.id, this.name, this.address, this.description, this.image, this.score);
     }
 
     @Override
