@@ -58,6 +58,8 @@ class AttractionController {
                     attraction.setName(newAttraction.getName());
                     attraction.setAddress(newAttraction.getAddress());
                     attraction.setDescription(newAttraction.getDescription());
+                    attraction.setImage(newAttraction.getImage());
+                    attraction.setScore(newAttraction.getScore());
                     return repository.save(attraction);
                 })
                 .orElseGet(() -> {
@@ -85,6 +87,10 @@ class AttractionController {
                         case "description":
                             attraction.setDescription(newValue);
                             break;
+                        case "image":
+                            attraction.setImage(newValue);
+                        case "score":
+                            attraction.setScore(Double.parseDouble(newValue));
                     }
                     return repository.save(attraction);
                 })
