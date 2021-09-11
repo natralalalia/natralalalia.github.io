@@ -23,15 +23,19 @@ public class Attraction implements Serializable {
     private String address;
     private String image;
     private double score;
+    private float latitude;
+    private float longitude;
 
     public Attraction() {}
 
-    public Attraction(String name, String description, String address, String image, double score) {
+    public Attraction(String name, String description, String address, String image, double score, float latitude, float longitude) {
         this.name = name;
         this.description = description;
         this.address = address;
         this.image = image;
         this.score = score;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public Long getId() {
@@ -49,6 +53,10 @@ public class Attraction implements Serializable {
     public String getImage() {return this.image;}
 
     public double getScore() {return this.score;}
+
+    public float getLatitude() {return this.latitude;}
+
+    public float getLongitude() {return this.longitude;}
 
     public void setId(Long id) {
         this.id = id;
@@ -70,6 +78,10 @@ public class Attraction implements Serializable {
 
     public void setScore(double score) {this.score = score;}
 
+    public void setLatitude(float latitude) {this.latitude = latitude;}
+
+    public void setLongitude(float longitude) {this.longitude = longitude;}
+
     @Override
     public boolean equals(Object o) {
 
@@ -83,12 +95,14 @@ public class Attraction implements Serializable {
                 Objects.equals(this.description, attraction.description) &&
                 Objects.equals(this.address, attraction.address) &&
                 Objects.equals(this.image, attraction.image) &&
-                Objects.equals(this.score, attraction.score);
+                Objects.equals(this.score, attraction.score) &&
+                Objects.equals(this.latitude, attraction.latitude) &&
+                Objects.equals(this.longitude, attraction.longitude);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.name, this.address, this.description, this.image, this.score);
+        return Objects.hash(this.id, this.name, this.address, this.description, this.image, this.score, this.latitude, this.longitude);
     }
 
     @Override

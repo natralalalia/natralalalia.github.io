@@ -60,6 +60,8 @@ class AttractionController {
                     attraction.setDescription(newAttraction.getDescription());
                     attraction.setImage(newAttraction.getImage());
                     attraction.setScore(newAttraction.getScore());
+                    attraction.setLatitude(newAttraction.getLatitude());
+                    attraction.setLongitude(newAttraction.getLongitude());
                     return repository.save(attraction);
                 })
                 .orElseGet(() -> {
@@ -91,6 +93,10 @@ class AttractionController {
                             attraction.setImage(newValue);
                         case "score":
                             attraction.setScore(Double.parseDouble(newValue));
+                        case "latitude":
+                            attraction.setLatitude(Float.parseFloat(newValue));
+                        case "longitude":
+                            attraction.setLongitude(Float.parseFloat(newValue));
                     }
                     return repository.save(attraction);
                 })

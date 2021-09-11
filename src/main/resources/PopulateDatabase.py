@@ -83,9 +83,9 @@ for response in responses:
             lon = data["results"][i]["coordinates"]["longitude"]
 
             add_attraction = ("INSERT INTO attraction "
-                           "(id, address, description, name, image, score) "
-                           "VALUES (%s, %s, %s, %s, %s, %s)")
-            data_attraction = (index, get_address(lat, lon), description, name, image, score)
+                           "(id, address, description, name, image, score, latitude, longitude) "
+                           "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)")
+            data_attraction = (index, get_address(lat, lon), description, name, image, score, lat, lon)
             # Insert new employee
             cursor.execute(add_attraction, data_attraction)
             # Make sure data is committed to the database
