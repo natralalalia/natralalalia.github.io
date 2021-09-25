@@ -91,12 +91,16 @@ class AttractionController {
                             break;
                         case "image":
                             attraction.setImage(newValue);
+                            break;
                         case "score":
                             attraction.setScore(Double.parseDouble(newValue));
+                            break;
                         case "latitude":
                             attraction.setLatitude(Float.parseFloat(newValue));
+                            break;
                         case "longitude":
                             attraction.setLongitude(Float.parseFloat(newValue));
+                            break;
                     }
                     return repository.save(attraction);
                 })
