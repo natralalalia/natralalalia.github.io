@@ -1,7 +1,5 @@
 package monkeys;
 
-import monkeys.Monkey;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -17,26 +15,13 @@ public class User {
 
     private String username;
 
-    private ArrayList<Monkey> monkeysSeen;
+    private String hashedPassword;
 
     User() {}
 
-    User(String username, ArrayList<Monkey> monkeysSeen){
+    User(String username, String hashedPassword){
         this.username = username;
-        this.monkeysSeen = monkeysSeen;
-    }
-
-    public ArrayList<Monkey> getMonkeysSeen() {
-        return monkeysSeen;
-    }
-
-    public void setMonkeysSeen(ArrayList<Monkey> monkeysSeen) {
-        this.monkeysSeen = monkeysSeen;
-    }
-
-    private void userSawMonkey(){
-        Monkey seenMonkey = new Monkey("Natalia", "Gutanu", "Chimpanzee");
-        monkeysSeen.add(seenMonkey);
+        this.hashedPassword = hashedPassword;
     }
 
     public Long getId() {
@@ -55,6 +40,14 @@ public class User {
         return this.username;
     }
 
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
+    }
+
+    public String getHashedPassword() {
+        return this.hashedPassword;
+    }
+
     @Override
     public boolean equals(Object u) {
         if (this == u)
@@ -62,16 +55,16 @@ public class User {
         if (!(u instanceof User))
             return false;
         User user = (User) u;
-        return Objects.equals(this.id, user.id) && Objects.equals(user.monkeysSeen, this.monkeysSeen);
+        return Objects.equals(this.id, user.id) && Objects.equals(user.hashedPassword, this.hashedPassword);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.username, this.monkeysSeen);
+        return Objects.hash(this.id, this.username, this.hashedPassword);
     }
 
     @Override
     public String toString() {
-        return "User{" + "id=" + this.id + ", username='" + this.username + '\'' + ", monkeysSeen=" + this.monkeysSeen + '}';
+        return "User{" + "id=" + this.id + ", username='" + this.username + '}';
     }
 }
