@@ -87,6 +87,9 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>2.3.3.RELEASE</version>
+				<configuration>
+					<jmxPort>9011</jmxPort>
+				</configuration>
 				<executions>
 					<execution>
 						<id>pre-integration-test</id>
