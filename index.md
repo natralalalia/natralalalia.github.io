@@ -1,4 +1,4 @@
-layout: page
-title: "Yellow world"
+
+# Yellow world
 
 The very first lines on Sunflower AI!
